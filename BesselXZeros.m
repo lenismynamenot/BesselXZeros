@@ -1,20 +1,20 @@
 (* :Title: BesselXZeros *)
 
-(* :Author: Jeff Kershaw, National Institute of Radiological Sciences, QST, Chiba, Japan *)
+(* :Author: Jeff Kershaw, National Institutes of Quantum Science and Technology, QST, Chiba, Japan *)
 
 (* :Context: BesselXZeros` *)
 
 (* :Version: 2.0 *)
 
-(* :Date: 2022-08-30 *)
+(* :Date: 2025-05-30 *)
 
 (* :Description: This package is a Mathematica-based implementation of some techniques
     developed to find the complex z-roots of the Bessel cross-product functions for
     general complex order. The following manuscript contains more detail:
 
-     Zeros distribution for cross-product combinations of the Bessel functions
+     Computing the zeros of cross-product combinations of the Bessel functions
      with complex order
-     J. Kershaw, T. Obata (submitted to Const Approx, Sept 2022)
+     J. Kershaw, T. Obata (under review, June 2025)
 *)
 
 BeginPackage["BesselXZeros`"];
