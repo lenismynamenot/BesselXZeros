@@ -1,12 +1,14 @@
+(* ::Package:: *)
+
 (* :Title: BesselXZeros *)
 
-(* :Author: Jeff Kershaw, National Institutes of Quantum Science and Technology, QST, Chiba, Japan *)
+(* :Author: Jeff Kershaw, National Institutes of Quantum Science and Technology (QST), Chiba, Japan *)
 
 (* :Context: BesselXZeros` *)
 
 (* :Version: 3.0 *)
 
-(* :Date: 2025-05-30 *)
+(* :Date: 2025-08-31 *)
 
 (* :Description: This package is a Mathematica-based implementation of some techniques
     developed to find the complex z-roots of the Bessel cross-product functions for
@@ -14,82 +16,86 @@
 
      Computing the zeros of cross-product combinations of the Bessel functions
      with complex order
-     J. Kershaw, T. Obata (under review, June 2025)
+     J. Kershaw, T. Obata (submitted to RINAM, June 2025)
 *)
 
 BeginPackage["BesselXZeros`"];
 
 BesselX00Zeros::usage=
-"\!\(BesselX00Zeros[\*StyleBox[\"\[Nu]\",\"TI\"], \*StyleBox[\"\[Lambda]\",\"TI\"]]\) \
+"\!\(BesselX00Zeros[\*StyleBox[\"\[Nu]\",\"TI\"], \*StyleBox[\"\[Lambda]\",\"TI\"], \*StyleBox[\"N\",\"TI\"]]\) \
 returns the \*StyleBox[\"z\",\"TI\"]-zeros of the Bessel cross-product function \
-\!\(\*SubsuperscriptBox[X,StyleBox[\"\[Nu]\",\"TI\"],\"00\"]\)(z, \[Lambda]) \
-for complex order \*StyleBox[\"\[Nu]\",\"TI\"] and non-negative real number \
-\*StyleBox[\"\[Lambda]\",\"TI\"]."
+\!\(\*SubsuperscriptBox[X,StyleBox[\"\[Nu]\",\"TI\"],\"00\"]\)(\*StyleBox[\"z\",\"TI\"], \
+\*StyleBox[\"\[Lambda]\",\"TI\"]) for complex order \*StyleBox[\"\[Nu]\",\"TI\"] and non-negative \
+real number \*StyleBox[\"\[Lambda]\",\"TI\"]. All of the zeros associated with the first and second \
+seedlines are returned while the argument \*StyleBox[\"N\",\"TI\"] controls the \
+number of roots that are returned for the third seedline. The default value is 10."
 
 BesselX01Zeros::usage=
-"\!\(BesselX01Zeros[\*StyleBox[\"\[Nu]\",\"TI\"], \*StyleBox[\"\[Lambda]\",\"TI\"]]\) \
+"\!\(BesselX01Zeros[\*StyleBox[\"\[Nu]\",\"TI\"], \*StyleBox[\"\[Lambda]\",\"TI\"], \*StyleBox[\"N\",\"TI\"]]\) \
 returns the \*StyleBox[\"z\",\"TI\"]-zeros of the Bessel cross-product function \
-\!\(\*SubsuperscriptBox[X,StyleBox[\"\[Nu]\",\"TI\"],\"01\"]\)(z, \[Lambda]) \
-for complex order \*StyleBox[\"\[Nu]\",\"TI\"] and non-negative real number \
-\*StyleBox[\"\[Lambda]\",\"TI\"]."
+\!\(\*SubsuperscriptBox[X,StyleBox[\"\[Nu]\",\"TI\"],\"01\"]\)(\*StyleBox[\"z\",\"TI\"], \
+\*StyleBox[\"\[Lambda]\",\"TI\"]) for complex order \*StyleBox[\"\[Nu]\",\"TI\"] and non-negative \
+real number \*StyleBox[\"\[Lambda]\",\"TI\"]. All of the zeros associated with the first and second \
+seedlines are returned while the argument \*StyleBox[\"N\",\"TI\"] controls the \
+number of roots that are returned for the third seedline. The default value is 10."
 
 BesselX10Zeros::usage=
-"\!\(BesselX10Zeros[\*StyleBox[\"\[Nu]\",\"TI\"], \*StyleBox[\"\[Lambda]\",\"TI\"]]\) \
+"\!\(BesselX10Zeros[\*StyleBox[\"\[Nu]\",\"TI\"], \*StyleBox[\"\[Lambda]\",\"TI\"], \*StyleBox[\"N\",\"TI\"]]\) \
 returns the \*StyleBox[\"z\",\"TI\"]-zeros of the Bessel cross-product function \
-\!\(\*SubsuperscriptBox[X,StyleBox[\"\[Nu]\",\"TI\"],\"10\"]\)(z, \[Lambda]) \
-for complex order \*StyleBox[\"\[Nu]\",\"TI\"] and non-negative real number \
-\*StyleBox[\"\[Lambda]\",\"TI\"]."
+\!\(\*SubsuperscriptBox[StyleBox[\"X\",\"TI\"],StyleBox[\"\[Nu]\",\"TI\"],\"10\"]\)(\*StyleBox[\"z\",\"TI\"], \
+\*StyleBox[\"\[Lambda]\",\"TI\"]) for complex order \*StyleBox[\"\[Nu]\",\"TI\"] and non-negative \
+real number \*StyleBox[\"\[Lambda]\",\"TI\"]. All of the zeros associated with the first and second \
+seedlines are returned while the argument \*StyleBox[\"N\",\"TI\"] controls the \
+number of roots that are returned for the third seedline. The default value is 10."
 
 BesselX11Zeros::usage=
-"\!\(BesselX11Zeros[\*StyleBox[\"\[Nu]\",\"TI\"], \*StyleBox[\"\[Lambda]\",\"TI\"]]\) \
+"\!\(BesselX11Zeros[\*StyleBox[\"\[Nu]\",\"TI\"], \*StyleBox[\"\[Lambda]\",\"TI\"], \*StyleBox[\"N\",\"TI\"]]\) \
 returns the \*StyleBox[\"z\",\"TI\"]-zeros of the Bessel cross-product function \
-\!\(\*SubsuperscriptBox[X,StyleBox[\"\[Nu]\",\"TI\"],\"11\"]\)(z, \[Lambda]) \
-for complex order \*StyleBox[\"\[Nu]\",\"TI\"] and non-negative real number \
-\*StyleBox[\"\[Lambda]\",\"TI\"]."
+\!\(\*SubsuperscriptBox[StyleBox[\"X\",\"TI\"],StyleBox[\"\[Nu]\",\"TI\"],\"11\"]\)(\*StyleBox[\"z\",\"TI\"], \
+\*StyleBox[\"\[Lambda]\",\"TI\"]) for complex order \*StyleBox[\"\[Nu]\",\"TI\"] and non-negative \
+real number \*StyleBox[\"\[Lambda]\",\"TI\"]. All of the zeros associated with the first and second \
+seedlines are returned while the argument \*StyleBox[\"N\",\"TI\"] controls the \
+number of roots that are returned for the third seedline. The default value is 10."
 
 BesselX00::usage=
 "\!\(BesselX00[\*StyleBox[\"z\",\"TI\"], \*StyleBox[\"\[Nu]\",\"TI\"], \*StyleBox[\"\[Lambda]\",\"TI\"]]\) \
 gives the Bessel cross-product function \
-\!\(\*SubsuperscriptBox[X,StyleBox[\"\[Nu]\",\"TI\"],\"00\"]\)(z, \[Lambda]) \
-= \!\(\*SubscriptBox[J,StyleBox[\"\[Nu]\",\"TI\"]](z) \
-\*SubscriptBox[Y,StyleBox[\"\[Nu]\",\"TI\"]](\*StyleBox[\"\[Lambda] z\"]) \
-- \*SubscriptBox[Y,StyleBox[\"\[Nu]\",\"TI\"]](z) \
-\*SubscriptBox[J,StyleBox[\"\[Nu]\",\"TI\"]](\*StyleBox[\"\[Lambda] z\"]) \
-for complex order \*StyleBox[\"\[Nu]\",\"TI\"] and non-negative real number \
-\*StyleBox[\"\[Lambda]\",\"TI\"]\)."
+\!\(\*SubsuperscriptBox[StyleBox[\"X\",\"TI\"],StyleBox[\"\[Nu]\",\"TI\"],\"00\"](\*StyleBox[\"z\",\"TI\"], \
+\*StyleBox[\"\[Lambda]\",\"TI\"]) = \*SubscriptBox[StyleBox[\"J\",\"TI\"],StyleBox[\"\[Nu]\",\"TI\"]](\*StyleBox[\"z\",\"TI\"]) \
+\*SubscriptBox[StyleBox[\"Y\",\"TI\"],StyleBox[\"\[Nu]\",\"TI\"]](\*StyleBox[\"\[Lambda] z\",\"TI\"]) \
+- \*SubscriptBox[StyleBox[\"Y\",\"TI\"],StyleBox[\"\[Nu]\",\"TI\"]](\*StyleBox[\"z\",\"TI\"]) \
+\*SubscriptBox[StyleBox[\"J\",\"TI\"],StyleBox[\"\[Nu]\",\"TI\"]](\*StyleBox[\"\[Lambda] z\",\"TI\"])\) for complex order \
+\*StyleBox[\"\[Nu]\",\"TI\"] and non-negative real number \*StyleBox[\"\[Lambda]\",\"TI\"]."
 
 BesselX01::usage=
 "\!\(BesselX01[\*StyleBox[\"z\",\"TI\"], \*StyleBox[\"\[Nu]\",\"TI\"], \*StyleBox[\"\[Lambda]\",\"TI\"]]\) \
 gives the Bessel cross-product function \
-\!\(\*SubsuperscriptBox[X,StyleBox[\"\[Nu]\",\"TI\"],\"01\"]\)(z, \[Lambda]) \
-= \!\(\*SubscriptBox[J,StyleBox[\"\[Nu]\",\"TI\"]](z) \
-\*SubscriptBox[Y,StyleBox[\"\[Nu]\",\"TI\"]]'(\*StyleBox[\"\[Lambda] z\"]) \
-- \*SubscriptBox[Y,StyleBox[\"\[Nu]\",\"TI\"]](z) \
-\*SubscriptBox[J,StyleBox[\"\[Nu]\",\"TI\"]]'(\*StyleBox[\"\[Lambda] z\"]) \
-for complex order \*StyleBox[\"\[Nu]\",\"TI\"] and non-negative real number \
-\*StyleBox[\"\[Lambda]\",\"TI\"]\)."
+\!\(\*SubsuperscriptBox[StyleBox[\"X\",\"TI\"],StyleBox[\"\[Nu]\",\"TI\"],\"01\"](\*StyleBox[\"z\",\"TI\"], \
+\*StyleBox[\"\[Lambda]\",\"TI\"]) = \*SubscriptBox[StyleBox[\"J\",\"TI\"],StyleBox[\"\[Nu]\",\"TI\"]](\*StyleBox[\"z\",\"TI\"]) \
+\*SubscriptBox[StyleBox[\"Y\",\"TI\"],StyleBox[\"\[Nu]\",\"TI\"]]'(\*StyleBox[\"\[Lambda] z\",\"TI\"]) \
+- \*SubscriptBox[StyleBox[\"Y\",\"TI\"],StyleBox[\"\[Nu]\",\"TI\"]](\*StyleBox[\"z\",\"TI\"]) \
+\*SubscriptBox[StyleBox[\"J\",\"TI\"],StyleBox[\"\[Nu]\",\"TI\"]]'(\*StyleBox[\"\[Lambda] z\",\"TI\"])\) for complex order \
+\*StyleBox[\"\[Nu]\",\"TI\"] and non-negative real number \*StyleBox[\"\[Lambda]\",\"TI\"]."
 
 BesselX10::usage=
 "\!\(BesselX10[\*StyleBox[\"z\",\"TI\"], \*StyleBox[\"\[Nu]\",\"TI\"], \*StyleBox[\"\[Lambda]\",\"TI\"]]\) \
 gives the Bessel cross-product function \
-\!\(\*SubsuperscriptBox[X,StyleBox[\"\[Nu]\",\"TI\"],\"10\"]\)(z, \[Lambda]) \
-= \!\(\*SubscriptBox[J,StyleBox[\"\[Nu]\",\"TI\"]]'(z) \
-\*SubscriptBox[Y,StyleBox[\"\[Nu]\",\"TI\"]](\*StyleBox[\"\[Lambda] z\"]) \
-- \*SubscriptBox[Y,StyleBox[\"\[Nu]\",\"TI\"]]'(z) \
-\*SubscriptBox[J,StyleBox[\"\[Nu]\",\"TI\"]](\*StyleBox[\"\[Lambda] z\"]) \
-for complex order \*StyleBox[\"\[Nu]\",\"TI\"] and non-negative real number \
-\*StyleBox[\"\[Lambda]\",\"TI\"]\)."
+\!\(\*SubsuperscriptBox[StyleBox[\"X\",\"TI\"],StyleBox[\"\[Nu]\",\"TI\"],\"10\"](\*StyleBox[\"z\",\"TI\"], \
+\*StyleBox[\"\[Lambda]\",\"TI\"]) = \*SubscriptBox[StyleBox[\"J\",\"TI\"],StyleBox[\"\[Nu]\",\"TI\"]]'(\*StyleBox[\"z\",\"TI\"]) \
+\*SubscriptBox[StyleBox[\"Y\",\"TI\"],StyleBox[\"\[Nu]\",\"TI\"]](\*StyleBox[\"\[Lambda] z\",\"TI\"]) \
+- \*SubscriptBox[StyleBox[\"Y\",\"TI\"],StyleBox[\"\[Nu]\",\"TI\"]]'(\*StyleBox[\"z\",\"TI\"]) \
+\*SubscriptBox[StyleBox[\"J\",\"TI\"],StyleBox[\"\[Nu]\",\"TI\"]](\*StyleBox[\"\[Lambda] z\",\"TI\"])\) for complex order \
+\*StyleBox[\"\[Nu]\",\"TI\"] and non-negative real number \*StyleBox[\"\[Lambda]\",\"TI\"]."
 
 BesselX11::usage=
 "\!\(BesselX11[\*StyleBox[\"z\",\"TI\"], \*StyleBox[\"\[Nu]\",\"TI\"], \*StyleBox[\"\[Lambda]\",\"TI\"]]\) \
 gives the Bessel cross-product function \
-\!\(\*SubsuperscriptBox[X,StyleBox[\"\[Nu]\",\"TI\"],\"11\"]\)(z, \[Lambda]) \
-= \!\(\*SubscriptBox[J,StyleBox[\"\[Nu]\",\"TI\"]]'(z) \
-\*SubscriptBox[Y,StyleBox[\"\[Nu]\",\"TI\"]]'(\*StyleBox[\"\[Lambda] z\"]) \
-- \*SubscriptBox[Y,StyleBox[\"\[Nu]\",\"TI\"]]'(z) \
-\*SubscriptBox[J,StyleBox[\"\[Nu]\",\"TI\"]]'(\*StyleBox[\"\[Lambda] z\"]) \
-for complex order \*StyleBox[\"\[Nu]\",\"TI\"] and non-negative real number \
-\*StyleBox[\"\[Lambda]\",\"TI\"]\)."
+\!\(\*SubsuperscriptBox[StyleBox[\"X\",\"TI\"],StyleBox[\"\[Nu]\",\"TI\"],\"11\"](\*StyleBox[\"z\",\"TI\"], \
+\*StyleBox[\"\[Lambda]\",\"TI\"]) = \*SubscriptBox[StyleBox[\"J\",\"TI\"],StyleBox[\"\[Nu]\",\"TI\"]]'(\*StyleBox[\"z\",\"TI\"]) \
+\*SubscriptBox[StyleBox[\"Y\",\"TI\"],StyleBox[\"\[Nu]\",\"TI\"]]'(\*StyleBox[\"\[Lambda] z\",\"TI\"]) \
+- \*SubscriptBox[StyleBox[\"Y\",\"TI\"],StyleBox[\"\[Nu]\",\"TI\"]]'(\*StyleBox[\"z\",\"TI\"]) \
+\*SubscriptBox[StyleBox[\"J\",\"TI\"],StyleBox[\"\[Nu]\",\"TI\"]]'(\*StyleBox[\"\[Lambda] z\",\"TI\"])\) for complex order \
+\*StyleBox[\"\[Nu]\",\"TI\"] and non-negative real number \*StyleBox[\"\[Lambda]\",\"TI\"]."
 
 Unprotect[BesselX00Zeros];
 Unprotect[BesselX01Zeros];
@@ -103,8 +109,11 @@ Unprotect[BesselX11];
 
 Begin["`Private`"]
 
+
+
 (* ::Subsubsection:: *)
 (*Definitions independent of a & b*)
+
 
 \[Sigma][z_]:=Module[{argz=Arg[z],absz=Abs[z],sigp=ArcSech[z]},
   Which[argz==0&&absz>1,Conjugate[sigp],
@@ -130,7 +139,7 @@ zi[z_]:=Block[{rho,zp,zip,th=Arg[z],abszip,argrho},
 
 rho[Z_]:=Log[(1+Sqrt[1-Z^2])/Z]-Sqrt[1-Z^2]
 
-zed[zi_]:=Module[{zip,rho,sig,s},
+Zed[zi_]:=Module[{zip,rho,sig,s},
   If[Arg[zi]<=0,zip=zi,zip=Conjugate[zi]];
   Which[zi==0,sig=0,zi==0.,sig=0.,
    Re[zi]<0&&Im[zi]==0,rho=(2/3)Abs[zi]^(3/2)I;
@@ -145,8 +154,8 @@ ptO\[Alpha][\[Alpha]_,\[Lambda]_]:=Block[{t\[Alpha],\[Alpha]p,zO,t\[Alpha]0},
   If[Log10[-\[Alpha]p]<-5,If[Abs[\[Alpha]p]<Abs[-10^-5-\[Alpha]p],\[Alpha]p=0,\[Alpha]p=-10^-5]];
   t\[Alpha]0=If[\[Alpha]p<-0.1,10^-5.,-zi[\[Lambda]]/2];
   zO=Switch[\[Alpha]p,0,1,0.,1,-\[Pi]/2,1/\[Lambda],-\[Pi]/2.,1/\[Lambda],
-    _,(zed[Re[t\[Alpha]/.#] Exp[I \[Pi]]/Exp[I \[Alpha]p]^(2/3)]/\[Lambda])&@
-      FindRoot[Arg[Exp[2I \[Alpha]p/3]zi[zed[t\[Alpha] Exp[\[Pi] I]/Exp[2I \[Alpha]p/3]]/\[Lambda]]]+\[Pi]/3,
+    _,(Zed[Re[t\[Alpha]/.#] Exp[I \[Pi]]/Exp[I \[Alpha]p]^(2/3)]/\[Lambda])&@
+      FindRoot[Arg[Exp[2I \[Alpha]p/3]zi[Zed[t\[Alpha] Exp[\[Pi] I]/Exp[2I \[Alpha]p/3]]/\[Lambda]]]+\[Pi]/3,
        {t\[Alpha],t\[Alpha]0,0,-zi[\[Lambda]]},Evaluated->False]];
   If[\[Alpha]>0,Conjugate[zO],zO]
 ]/;ReQ[\[Lambda]]&&(1<\[Lambda])&&(Abs[\[Alpha]]<=\[Pi]/2)
@@ -159,15 +168,16 @@ CmplxQ[x_]:=NumericQ[x]&&(Im[x]!=0)
 (* ::Subsubsection:: *)
 (*Definitions for X11*)
 
+
 Xi11[Z_,\[Nu]_,\[Lambda]_]:=AiryAiPrime[\[Nu]^(2/3)zi[Z]]AiryBiPrime[\[Nu]^(2/3)zi[\[Lambda] Z]]-
   AiryBiPrime[\[Nu]^(2/3)zi[Z]]AiryAiPrime[\[Nu]^(2/3)zi[\[Lambda] Z]]
 
 Xi11Z0m1[m1_(*Integer*),\[Nu]_(*Complex*),\[Lambda]_]:=
-  zed[(3/2Abs[m1-3/4]\[Pi]/Abs[\[Nu]])^(2/3)Exp[(-\[Pi]+2Abs[Arg[\[Nu]]]/3)I]]/\[Lambda]/;
+  Zed[(3/2Abs[m1-3/4]\[Pi]/Abs[\[Nu]])^(2/3)Exp[(-\[Pi]+2Abs[Arg[\[Nu]]]/3)I]]/\[Lambda]/;
    ((*(1\[LessEqual]m1\[LessEqual]M11m1[\[Nu],\[Lambda]])&&*)ReQ[\[Lambda]]&&\[Lambda]>1)
 
 Xi11Z0m2[m2_(*Integer*),\[Nu]_(*Complex*),\[Lambda]_]:=
-  zed[(3/2Abs[m2-3/4]\[Pi]/Abs[\[Nu]])^(2/3)Exp[(-\[Pi]/3+2Abs[Arg[\[Nu]]]/3)I]]/;
+  Zed[(3/2Abs[m2-3/4]\[Pi]/Abs[\[Nu]])^(2/3)Exp[(-\[Pi]/3+2Abs[Arg[\[Nu]]]/3)I]]/;
    ((*(1\[LessEqual]m2\[LessEqual]M11m2[\[Nu],\[Lambda]])&&*)ReQ[\[Lambda]]&&\[Lambda]>1)
 
 Xi11Z0m3[m3_(*Integer*), \[Nu]_(*Complex*),\[Lambda]_]:=
@@ -412,15 +422,20 @@ BesselX11[z_,\[Nu]_,\[Lambda]_]:=
     ((*ReQ[\[Nu]]&&*)ReQ[\[Lambda]](*&&\[Lambda]\[NotEqual]1*))
 
 BesselX11Zeros[\[Nu]_,\[Lambda]_,Nz_:10]:=
-  Block[{\[Nu]p,\[Lambda]p,seeds,roots,z,i,debug=False},
+  Block[{\[Nu]p,\[Lambda]p,seeds,nseeds,roots,nroots,sa,z,i,debug=False},
+   sa[Z_,a_:10]:=SetAccuracy[Z,a];
    \[Lambda]p=SetPrecision[If[0<\[Lambda]<1,1/\[Lambda],\[Lambda]],\[Infinity]];
    \[Nu]p=SetPrecision[#,\[Infinity]]&@Which[-\[Pi]<Arg[\[Nu]]<-\[Pi]/2,Conjugate[-\[Nu]],\[Pi]/2<Arg[\[Nu]]<=\[Pi],-\[Nu],
     0<Arg[\[Nu]]<=\[Pi]/2,Conjugate[\[Nu]],-\[Pi]/2<=Arg[\[Nu]]<=0,\[Nu],True,Print["Unexpected value for Arg[\[Nu]]."];Abort[]];
    If[debug,Print["BesselX11Zeros:1"];Print[\[Nu]," \[Equivalent] ",\[Nu]p,", ",\[Lambda]," \[Equivalent] ",\[Lambda]p,", ",Nz]];
    seeds=Xi11Roots[\[Nu]p,\[Lambda]p,Nz];
+   nseeds=Length/@seeds;
    If[debug,Print["BesselX11Zeros:2"];Print[seeds];Print[\[Nu]p seeds]];
    roots=Table[z/.FindRoot[N[BesselX11[SetPrecision[z,\[Infinity]],\[Nu]p,\[Lambda]p],50],{z,SetPrecision[#,\[Infinity]]},
     Evaluated->False]&/@(\[Nu]p seeds[[i]]),{i,1,3}];
+   nroots=Length/@(Union[#,SameTest->((sa[#]==sa[#2])&)]&/@roots);
+   If[nseeds!=nroots,Print["Unexpected number of roots. Expected: ",nseeds,", Found: ",nroots,"."];
+    Print[{\[Nu],\[Lambda]}]; Print[seeds]; Print[roots]; Abort[];];
    If[debug,Print["BesselX11Zeros:3"];Print[roots]];
    Which[Arg[\[Nu]]==0,roots=Re@roots,-\[Pi]<Arg[\[Nu]]<-\[Pi]/2,roots=-Conjugate[roots],\[Pi]/2<Arg[\[Nu]]<=\[Pi],roots=-roots,
     0<Arg[\[Nu]]<=\[Pi]/2,roots=Conjugate[roots],-\[Pi]/2<=Arg[\[Nu]]<=0,roots];
@@ -431,15 +446,16 @@ BesselX11Zeros[\[Nu]_,\[Lambda]_,Nz_:10]:=
 (* ::Subsubsection:: *)
 (*Definitions for X00*)
 
+
 Xi00[Z_,\[Nu]_,\[Lambda]_]:=AiryAi[\[Nu]^(2/3)zi[Z]]AiryBi[\[Nu]^(2/3)zi[\[Lambda] Z]]-
   AiryBi[\[Nu]^(2/3)zi[Z]]AiryAi[\[Nu]^(2/3)zi[\[Lambda] Z]]
 
 Xi00Z0m1[m1_(*Integer*),\[Nu]_(*Complex*),\[Lambda]_Real]:=
-  zed[(3/2Abs[m1-1/4]\[Pi]/Abs[\[Nu]])^(2/3)Exp[(-\[Pi]+2Abs[Arg[\[Nu]]]/3)I]]/\[Lambda]/;
+  Zed[(3/2Abs[m1-1/4]\[Pi]/Abs[\[Nu]])^(2/3)Exp[(-\[Pi]+2Abs[Arg[\[Nu]]]/3)I]]/\[Lambda]/;
    ((*(1\[LessEqual]m1\[LessEqual]M00m1[\[Nu],\[Lambda]]+1)&&*)\[Lambda]>1)
 
 Xi00Z0m2[m2_(*Integer*),\[Nu]_(*Complex*),\[Lambda]_Real]:=
-  zed[(3/2Abs[m2-1/4]\[Pi]/Abs[\[Nu]])^(2/3)Exp[(-\[Pi]/3+2Abs[Arg[\[Nu]]]/3)I]]/;
+  Zed[(3/2Abs[m2-1/4]\[Pi]/Abs[\[Nu]])^(2/3)Exp[(-\[Pi]/3+2Abs[Arg[\[Nu]]]/3)I]]/;
    ((*(1\[LessEqual]m2\[LessEqual]M00m2[\[Nu],\[Lambda]])&&*)\[Lambda]>1)
 
 Xi00Z0m3[m3_(*Integer*), \[Nu]_Complex,\[Lambda]_Real]:=
@@ -682,14 +698,19 @@ Block[{\[Nu]p,\[Lambda]p,seeds1,seeds2,seeds3,roots1,roots2,roots3,Z,m1,m2,m3,m0
 BesselX00[z_,\[Nu]_,\[Lambda]_]:=BesselJ[\[Nu],z]BesselY[\[Nu],\[Lambda] z]-BesselY[\[Nu],z]BesselJ[\[Nu],\[Lambda] z]
 
 BesselX00Zeros[\[Nu]_,\[Lambda]_,Nz_:10]:=
-Block[{\[Nu]p,\[Lambda]p,seeds,roots,z,i,debug=False},
+Block[{\[Nu]p,\[Lambda]p,seeds,nseeds,roots,nroots,sa,z,i,debug=False},
+ sa[Z_,a_:10]:=SetAccuracy[Z,a];
  \[Lambda]p=If[0<\[Lambda]<1,1/\[Lambda],\[Lambda]];
  \[Nu]p=Which[-\[Pi]<Arg[\[Nu]]<-\[Pi]/2,Conjugate[-\[Nu]],\[Pi]/2<Arg[\[Nu]]<=\[Pi],-\[Nu],0<Arg[\[Nu]]<=\[Pi]/2,Conjugate[\[Nu]],
   -\[Pi]/2<=Arg[\[Nu]]<=0,\[Nu],True,Print["Unexpected value for Arg[\[Nu]]."];Abort[]];
  If[debug,Print["BesselX00Zeros:1"];Print[\[Nu]," \[Equivalent] ",\[Nu]p,", ",\[Lambda]," \[Equivalent] ",\[Lambda]p,", ",Nz]];
  seeds=\[Nu]p Xi00Roots[\[Nu]p,\[Lambda]p,Nz];
+ nseeds=Length/@seeds;
  If[debug,Print["BesselX00Zeros:2"];Print[seeds];Print[\[Nu]p seeds]];
  roots=Table[z/.FindRoot[BesselX00[z,\[Nu]p,\[Lambda]p],{z,#},Evaluated->False]&/@seeds[[i]],{i,1,3}];
+ nroots=Length/@(Union[#,SameTest->((sa[#]==sa[#2])&)]&/@roots);
+ If[nseeds!=nroots,Print["Unexpected number of roots. Expected: ",nseeds,", Found: ",nroots,"."]; Print[{\[Nu],\[Lambda]}];
+  Print[seeds]; Print[roots]; Abort[];];
  If[debug,Print["BesselX00Zeros:3"];Print[roots]];
  Which[Arg[\[Nu]]==0,roots=Re@roots,-\[Pi]<Arg[\[Nu]]<-\[Pi]/2,roots=-Conjugate[roots],\[Pi]/2<Arg[\[Nu]]<=\[Pi],roots=-roots,
   0<Arg[\[Nu]]<=\[Pi]/2,roots=Conjugate[roots],-\[Pi]/2<=Arg[\[Nu]]<=0,roots];
@@ -700,15 +721,16 @@ Block[{\[Nu]p,\[Lambda]p,seeds,roots,z,i,debug=False},
 (* ::Subsubsection:: *)
 (*Definitions for X01*)
 
+
 Xi01[Z_,\[Nu]_,\[Lambda]_]:=AiryAi[\[Nu]^(2/3)zi[Z]]AiryBiPrime[\[Nu]^(2/3)zi[\[Lambda] Z]]-
   AiryBi[\[Nu]^(2/3)zi[Z]]AiryAiPrime[\[Nu]^(2/3)zi[\[Lambda] Z]]
 
 Xi01Z0m1[m1_(*Integer*),\[Nu]_(*Complex*),\[Lambda]_Real]:=
-  zed[(3/2Abs[m1-3/4]\[Pi]/Abs[\[Nu]])^(2/3)Exp[(-\[Pi]+2Abs[Arg[\[Nu]]]/3)I]]/\[Lambda]/;
+  Zed[(3/2Abs[m1-3/4]\[Pi]/Abs[\[Nu]])^(2/3)Exp[(-\[Pi]+2Abs[Arg[\[Nu]]]/3)I]]/\[Lambda]/;
    ((*(1\[LessEqual]m1\[LessEqual]M01m1[\[Nu],\[Lambda]])&&*)\[Lambda]>1)
 
 Xi01Z0m2[m2_(*Integer*),\[Nu]_(*Complex*),\[Lambda]_Real]:=
-  zed[(3/2Abs[m2-1/4]\[Pi]/Abs[\[Nu]])^(2/3)Exp[(-\[Pi]/3+2Abs[Arg[\[Nu]]]/3)I]]/;
+  Zed[(3/2Abs[m2-1/4]\[Pi]/Abs[\[Nu]])^(2/3)Exp[(-\[Pi]/3+2Abs[Arg[\[Nu]]]/3)I]]/;
    ((*(1\[LessEqual]m2\[LessEqual]M01m2[\[Nu],\[Lambda]])&&*)\[Lambda] > 1)
 
 Xi01Z0m3[m3_(*Integer*), \[Nu]_Complex,\[Lambda]_Real]:=
@@ -955,33 +977,39 @@ BesselX01[z_,\[Nu]_,\[Lambda]_]:=
     BesselY[\[Nu],z](BesselJ[-1+\[Nu],\[Lambda] z]-BesselJ[1+\[Nu],\[Lambda] z]))/2
 
 BesselX01Zeros[\[Nu]_,\[Lambda]_,Nz_:10]:=
-Block[{\[Nu]p,\[Lambda]p,seeds,roots,z,i,debug=False},
- \[Lambda]p=If[0<\[Lambda]<1,1/\[Lambda],\[Lambda]];
- \[Nu]p=Which[-\[Pi]<Arg[\[Nu]]<-\[Pi]/2,Conjugate[-\[Nu]],\[Pi]/2<Arg[\[Nu]]<=\[Pi],-\[Nu],
+Block[{\[Nu]p,\[Lambda]p,seeds,nseeds,roots,nroots,sa,z,i,debug=False},
+ sa[Z_,a_:10]:=SetAccuracy[Z,a];
+ If[0<\[Lambda]<1,roots=BesselX10Zeros[\[Nu],1/\[Lambda],Nz]/\[Lambda],
+  \[Lambda]p=\[Lambda];
+  \[Nu]p=Which[-\[Pi]<Arg[\[Nu]]<-\[Pi]/2,Conjugate[-\[Nu]],\[Pi]/2<Arg[\[Nu]]<=\[Pi],-\[Nu],
   0<Arg[\[Nu]]<=\[Pi]/2,Conjugate[\[Nu]],-\[Pi]/2<=Arg[\[Nu]]<=0,\[Nu],True,Print["Unexpected value for Arg[\[Nu]]."];Abort[]];
- If[debug,Print["BesselX01Zeros:1"];Print[\[Nu]," \[Equivalent] ",\[Nu]p,", ",\[Lambda]," \[Equivalent] ",\[Lambda]p,", ",Nz]];
- seeds=\[Nu]p Xi01Roots[\[Nu]p,\[Lambda]p,Nz];
- If[debug,Print["BesselX01Zeros:2"];Print[seeds];Print[\[Nu]p seeds]];
- roots=Table[z/.FindRoot[BesselX01[z,\[Nu]p,\[Lambda]p],{z,#},Evaluated->False]&/@seeds[[i]],{i,1,3}];
- If[debug,Print["BesselX01Zeros:3"];Print[roots]];
- Which[Arg[\[Nu]]==0,roots=Re@roots,-\[Pi]<Arg[\[Nu]]<-\[Pi]/2,roots=-Conjugate[roots],
-  \[Pi]/2<Arg[\[Nu]]<=\[Pi],roots=-roots,0<Arg[\[Nu]]<=\[Pi]/2,roots=Conjugate[roots],-\[Pi]/2<=Arg[\[Nu]]<=0,roots];
- If[0<\[Lambda]<1,roots=roots/\[Lambda],roots]
-]/;(ReQ[\[Lambda]]&&\[Lambda]>0 &&\[Lambda]!=1)
+  If[debug,Print["BesselX01Zeros:1"];Print[\[Nu]," \[Equivalent] ",\[Nu]p,", ",\[Lambda]," \[Equivalent] ",\[Lambda]p,", ",Nz]];
+  seeds=\[Nu]p Xi01Roots[\[Nu]p,\[Lambda]p,Nz];
+  nseeds=Length/@seeds;
+  If[debug,Print["BesselX01Zeros:2"];Print[seeds];Print[\[Nu]p seeds]];
+  roots=Table[z/.FindRoot[BesselX01[z,\[Nu]p,\[Lambda]p],{z,#},Evaluated->False]&/@seeds[[i]],{i,1,3}];
+  nroots=Length/@(Union[#,SameTest->((sa[#]==sa[#2])&)]&/@roots);
+  If[nseeds!=nroots,Print["Unexpected number of roots. Expected: ",nseeds,", Found: ",nroots,"."]; Print[{\[Nu],\[Lambda]}];
+   Print[seeds]; Print[roots]; Abort[];];
+  If[debug,Print["BesselX01Zeros:3"];Print[roots]];
+  Which[Arg[\[Nu]]==0,roots=Re@roots,-\[Pi]<Arg[\[Nu]]<-\[Pi]/2,roots=-Conjugate[roots],
+   \[Pi]/2<Arg[\[Nu]]<=\[Pi],roots=-roots,0<Arg[\[Nu]]<=\[Pi]/2,roots=Conjugate[roots],-\[Pi]/2<=Arg[\[Nu]]<=0,roots]
+ ]]/;(ReQ[\[Lambda]]&&\[Lambda]>0 &&\[Lambda]!=1)
 
 
 (* ::Subsubsection:: *)
 (*Definitions for X10*)
 
+
 Xi10[Z_,\[Nu]_,\[Lambda]_]:=AiryAiPrime[\[Nu]^(2/3)zi[Z]]AiryBi[\[Nu]^(2/3)zi[\[Lambda] Z]]-
   AiryBiPrime[\[Nu]^(2/3)zi[Z]]AiryAi[\[Nu]^(2/3)zi[\[Lambda] Z]]
 
 Xi10Z0m1[m1_(*Integer*),\[Nu]_(*Complex*),\[Lambda]_Real]:=
-  zed[(3/2Abs[m1-1/4]\[Pi]/Abs[\[Nu]])^(2/3)Exp[(-\[Pi]+2Abs[Arg[\[Nu]]]/3)I]]/\[Lambda]/;
+  Zed[(3/2Abs[m1-1/4]\[Pi]/Abs[\[Nu]])^(2/3)Exp[(-\[Pi]+2Abs[Arg[\[Nu]]]/3)I]]/\[Lambda]/;
    ((*(1\[LessEqual]m1\[LessEqual]M10m1[\[Nu],\[Lambda]]+1)&&*)\[Lambda]>1)
 
 Xi10Z0m2[m2_(*Integer*),\[Nu]_(*Complex*),\[Lambda]_Real]:=
-  zed[(3/2Abs[m2-3/4]\[Pi]/Abs[\[Nu]])^(2/3)Exp[(-\[Pi]/3+2Abs[Arg[\[Nu]]]/3)I]]/;
+  Zed[(3/2Abs[m2-3/4]\[Pi]/Abs[\[Nu]])^(2/3)Exp[(-\[Pi]/3+2Abs[Arg[\[Nu]]]/3)I]]/;
    ((*(1\[LessEqual]m2\[LessEqual]M10m2[\[Nu],\[Lambda]])&&*)\[Lambda] > 1)
 
 Xi10Z0m3[m3_(*Integer*), \[Nu]_Complex,\[Lambda]_Real]:=
@@ -1225,19 +1253,24 @@ BesselX10[z_,\[Nu]_,\[Lambda]_]:=
   ((BesselJ[-1+\[Nu],z]-BesselJ[1+\[Nu],z])BesselY[\[Nu],\[Lambda] z]-(BesselY[-1+\[Nu],z]-BesselY[1+\[Nu],z])BesselJ[\[Nu],\[Lambda] z])/2
 
 BesselX10Zeros[\[Nu]_,\[Lambda]_,Nz_:10]:=
-Block[{\[Nu]p,\[Lambda]p,seeds,roots,z,i,debug=False},
- \[Lambda]p=If[0<\[Lambda]<1,1/\[Lambda],\[Lambda]];
- \[Nu]p=Which[-\[Pi]<Arg[\[Nu]]<-\[Pi]/2,Conjugate[-\[Nu]],\[Pi]/2<Arg[\[Nu]]<=\[Pi],-\[Nu],
-  0<Arg[\[Nu]]<=\[Pi]/2,Conjugate[\[Nu]],-\[Pi]/2<=Arg[\[Nu]]<=0,\[Nu],True,Print["Unexpected value for Arg[\[Nu]]."];Abort[]];
- If[debug,Print["BesselX10Zeros:1"];Print[\[Nu]," \[Equivalent] ",\[Nu]p,", ",\[Lambda]," \[Equivalent] ",\[Lambda]p,", ",Nz]];
- seeds=\[Nu]p Xi10Roots[\[Nu]p,\[Lambda]p,Nz];
- If[debug,Print["BesselX10Zeros:2"];Print[seeds];Print[\[Nu]p seeds]];
- roots=Table[z/.FindRoot[BesselX10[z,\[Nu]p,\[Lambda]p],{z,#},Evaluated->False]&/@seeds[[i]],{i,1,3}];
- If[debug,Print["BesselX10Zeros:3"];Print[roots]];
- Which[Arg[\[Nu]]==0,roots=Re@roots,-\[Pi]<Arg[\[Nu]]<-\[Pi]/2,roots=-Conjugate[roots],\[Pi]/2<Arg[\[Nu]]<=\[Pi],roots=-roots,
-  0<Arg[\[Nu]]<=\[Pi]/2,roots=Conjugate[roots],-\[Pi]/2<=Arg[\[Nu]]<=0,roots];
- If[0<\[Lambda]<1,roots=roots/\[Lambda],roots]
-]/;(ReQ[\[Lambda]]&&\[Lambda]>0 &&\[Lambda]!=1)
+Block[{\[Nu]p,\[Lambda]p,seeds,nseeds,roots,nroots,sa,z,i,debug=False},
+ sa[Z_,a_:10]:=SetAccuracy[Z,a];
+ If[0<\[Lambda]<1,roots=BesselX01Zeros[\[Nu],1/\[Lambda],Nz]/\[Lambda],
+  \[Lambda]p=\[Lambda];
+  \[Nu]p=Which[-\[Pi]<Arg[\[Nu]]<-\[Pi]/2,Conjugate[-\[Nu]],\[Pi]/2<Arg[\[Nu]]<=\[Pi],-\[Nu],
+    0<Arg[\[Nu]]<=\[Pi]/2,Conjugate[\[Nu]],-\[Pi]/2<=Arg[\[Nu]]<=0,\[Nu],True,Print["Unexpected value for Arg[\[Nu]]."];Abort[]];
+  If[debug,Print["BesselX10Zeros:1"];Print[\[Nu]," \[Equivalent] ",\[Nu]p,", ",\[Lambda]," \[Equivalent] ",\[Lambda]p,", ",Nz]];
+  seeds=\[Nu]p Xi10Roots[\[Nu]p,\[Lambda]p,Nz];
+  nseeds=Length/@seeds;
+  If[debug,Print["BesselX10Zeros:2"];Print[seeds];Print[\[Nu]p seeds]];
+  roots=Table[z/.FindRoot[BesselX10[z,\[Nu]p,\[Lambda]p],{z,#},Evaluated->False]&/@seeds[[i]],{i,1,3}];
+  nroots=Length/@(Union[#,SameTest->((sa[#]==sa[#2])&)]&/@roots);
+  If[nseeds!=nroots,Print["Unexpected number of roots. Expected: ",nseeds,", Found: ",nroots,"."]; Print[{\[Nu],\[Lambda]}];
+   Print[seeds]; Print[roots]; Abort[];];
+  If[debug,Print["BesselX10Zeros:3"];Print[roots]];
+  Which[Arg[\[Nu]]==0,roots=Re@roots,-\[Pi]<Arg[\[Nu]]<-\[Pi]/2,roots=-Conjugate[roots],\[Pi]/2<Arg[\[Nu]]<=\[Pi],roots=-roots,
+   0<Arg[\[Nu]]<=\[Pi]/2,roots=Conjugate[roots],-\[Pi]/2<=Arg[\[Nu]]<=0,roots]
+ ]]/;(ReQ[\[Lambda]]&&\[Lambda]>0 &&\[Lambda]!=1)
 
 
 End[]
